@@ -8,26 +8,33 @@ int main (int argc, char** argv)
     FILE *outputFile = fopen("./output.txt", "w");
     if (inputFile == NULL || outputFile == NULL) {
         printf("oopsies\n");
+        fclose(outputFile);
+        fclose(inputFile);
         return -1;
     }
-    printf("meow\n");
 
-    char line[5];
-    int dial = 50, sum = 0;
+    char line[6];
+    int dial = 1000050, sum = 0, temp;
     while (fgets(line, 6, inputFile) != NULL)
     {
         char dir = line[0];
         int move = atoi(&line[1]);
-        if (dir == 'L') 
-            dial = (dial - move) % 100;
-        else 
-            dial = (dial + move) % 100;
-        if (dial == 0) sum++;
+        if (dir == 'L') {
+            temp = (dial - move);
+        } else {
+            temp = (dial + move);
+        }
+        int tempDiff = temp / 100;
+        int dialDiff = dial / 100;
+        sum += (tempDiff > dialDiff ? tempDiff - dialDiff : dialDiff - tempDiff);
+        if (dir == 'L' && temp % 100 == 0) { sum++; }
+        if (dir == 'L' && dial % 100 == 0) { sum--; }
+        dial = temp;
+        fprintf(outputFile, "dial: %d, sum: %d\n", dial, sum);
     }
-    printf("sum: %d\n", sum);
 
-    fclose(inputFile);
     fclose(outputFile);
+    fclose(inputFile);
 
     return 0;
 }

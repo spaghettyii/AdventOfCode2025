@@ -1,2 +1,2 @@
 my_file:
-	gcc main.c -o Unlock
+	gcc -O1 main.c -o Unlock
